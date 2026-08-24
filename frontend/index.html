@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeReviewer AI - Screening Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Premium Header -->
+        <header>
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">📄</div>
+                    <div>
+                        <h1>ResumeReviewer AI</h1>
+                        <p class="subtitle">SCREENING STUDIO</p>
+                    </div>
+                </div>
+                <div class="header-tagline">
+                    <p class="tagline">Find the signal. Not just the keywords.</p>
+                    <p class="description">A focused screening workspace that turns resumes and job descriptions into explainable hiring insights.</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Left Column - Upload Section -->
+            <section class="upload-section">
+                <!-- Mode Selector -->
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="single">
+                        <span class="mode-icon">👤</span>
+                        Single Candidate
+                    </button>
+                    <button class="mode-btn" data-mode="multi">
+                        <span class="mode-icon">👥</span>
+                        Multi-Candidate
+                    </button>
+                </div>
+
+                <!-- Single Candidate Mode -->
+                <div id="singleMode" class="mode-content active">
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <span class="card-icon">📋</span>
+                            <h3>Candidate Profile</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Full Name <span class="optional">(optional)</span></label>
+                            <input type="text" id="candidateName" placeholder="e.g., Rahul Sharma">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Resume Text</label>
+                            <textarea id="resumeText" rows="5" placeholder="Paste resume text for a single-candidate review..."></textarea>
+                        </div>
+
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Upload Resume</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="resumeFile" accept=".pdf,.txt">
+                                <div class="file-upload-box">
+                                    <div class="upload-icon-wrapper">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M12 16V4M8 8l4-4 4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
+                                        </svg>
+                                    </div>
+                                    <span class="upload-text">Drop your resume here or <span class="browse-text">browse</span></span>
+                                    <span class="file-name" id="fileName">No file chosen</span>
+                                    <span class="file-types">PDF or TXT up to 5MB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="requirements-card">
+                        <div class="card-header">
+                            <span class="card-icon">🎯</span>
+                            <h3>Role Requirements</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Job Description</label>
+                            <textarea id="jobDescription" rows="6">Looking for a Software Engineer with:
+- Java (Spring Boot)
+- React.js
+- SQL / MySQL
+- REST API development
+- Git
+- AWS experience
+- Strong problem-solving skills
+- 3+ years of experience</textarea>
+                        </div>
+                    </div>
+
+                    <button class="analyze-btn" id="analyzeBtn">
+                        <span class="btn-text">🔍 Analyze Candidate</span>
+                        <span class="btn-loader" style="display:none;">⏳</span>
+                    </button>
+                    <div id="singleError" class="error-message" style="display:none;"></div>
+                </div>
+
+                <!-- Multi Candidate Mode -->
+                <div id="multiMode" class="mode-content">
+                    <div class="multi-card">
+                        <div class="card-header">
+                            <span class="card-icon">📊</span>
+                            <h3>Multi-Candidate Mode</h3>
+                        </div>
+                        <p class="multi-description">Rank an entire candidate pool. Upload multiple PDF or text resumes and receive an ordered shortlist.</p>
+                        
+                        <div class="form-group">
+                            <label>Job Description</label>
+                            <textarea id="multiJobDescription" rows="4">Looking for a Software Engineer with:
+- Java (Spring Boot)
+- React.js
+- SQL / MySQL
+- REST API development
+- Git
+- AWS experience
+- Strong problem-solving skills</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Upload Multiple Resumes</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="multiResumeFiles" accept=".pdf,.txt" multiple>
+                                <div class="file-upload-box">
+                                    <div class="upload-icon-wrapper">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M12 16V4M8 8l4-4 4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
+                                            <path d="M16 12l-4 4-4-4"/>
+                                        </svg>
+                                    </div>
+                                    <span class="upload-text">Drop multiple resumes here or <span class="browse-text">browse</span></span>
+                                    <span class="file-name" id="multiFileName">No files chosen</span>
+                                    <span class="file-types">PDF or TXT up to 5MB each</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="analyze-btn" id="multiAnalyzeBtn">
+                            <span class="btn-text">📊 Analyze All Candidates</span>
+                            <span class="btn-loader" style="display:none;">⏳</span>
+                        </button>
+                        <div id="multiError" class="error-message" style="display:none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column - Results Section -->
+            <section class="results-section" id="resultsSection" style="display:none;">
+                <div class="results-header">
+                    <h2>📊 Screening Result</h2>
+                </div>
+                
+                <div class="result-card" id="resultCard">
+                    <div class="candidate-header">
+                        <div class="candidate-info">
+                            <h3 id="resultName">Rahul Sharma</h3>
+                            <p id="resultEducation">B.Tech Computer Science</p>
+                        </div>
+                        <div class="compatibility-score">
+                            <span class="score-value" id="resultScore">98</span>
+                            <span class="score-label">%</span>
+                        </div>
+                    </div>
+
+                    <div class="match-summary" id="resultSummary">
+                        Matched 7 of 7 job-relevant skills. Overall compatibility score: 98%
+                    </div>
+
+                    <div class="recommendation">
+                        <h4>Recommendation</h4>
+                        <div class="rec-badge" id="resultBadge">Strong shortlist</div>
+                        <p id="resultDetails">Experience: Not clearly specified · Bachelor's degree detected</p>
+                    </div>
+
+                    <div class="signals-grid">
+                        <div class="signal-box matched">
+                            <div class="signal-header">
+                                <span class="signal-icon">✅</span>
+                                <h4>Matched Signals</h4>
+                                <span class="signal-count" id="matchedCount">0</span>
+                            </div>
+                            <div id="matchedSignals" class="signal-tags"></div>
+                        </div>
+                        <div class="signal-box gaps">
+                            <div class="signal-header">
+                                <span class="signal-icon">⚠️</span>
+                                <h4>Potential Gaps</h4>
+                                <span class="signal-count" id="gapsCount">0</span>
+                            </div>
+                            <div id="potentialGaps" class="signal-tags"></div>
+                        </div>
+                    </div>
+
+                    <div class="signal-box inventory">
+                        <div class="signal-header">
+                            <span class="signal-icon">📋</span>
+                            <h4>Resume Inventory</h4>
+                            <span class="signal-count" id="inventoryCount">0</span>
+                        </div>
+                        <div id="resumeInventory" class="signal-tags"></div>
+                    </div>
+                </div>
+
+                <!-- Multi Results -->
+                <div id="multiResults" style="display:none; margin-top: 2rem;">
+                    <div class="results-header">
+                        <h2>📊 Ranked Candidates</h2>
+                    </div>
+                    <div id="rankedList"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
